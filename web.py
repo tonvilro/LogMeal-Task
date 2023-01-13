@@ -51,6 +51,8 @@ def analyze_image(image_id):
         return jsonify({'ERROR': str(e)}), 500
 
 
+
+
 def allowed_file(filename):
     allowedExtensions = {'jpg', 'jpeg', 'png', 'gif'}
     return get_file_extension(filename) in allowedExtensions
