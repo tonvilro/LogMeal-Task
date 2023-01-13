@@ -1,7 +1,7 @@
 import os
-import re
+import zipfile
 from datetime import datetime
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort, send_file
 from PIL import Image
 
 app = Flask(__name__)
@@ -37,7 +37,7 @@ def upload_image():
 @app.route('/analyze_image/<image_id>', methods=['GET'])
 def analyze_image(image_id):
     try:
-        folder_path = os.path.join(app.config['UPLOAD_FOLDER'])
+        folder_path = app.config['UPLOAD_FOLDER']
         image_path = f"{folder_path}/{image_id}"
 
         with Image.open(image_path) as img:
@@ -51,11 +51,34 @@ def analyze_image(image_id):
         return jsonify({'ERROR': str(e)}), 500
 
 
+@app.route('/list_images', methods=['GET'])
+def list_images():
+    folder_path = app.config['UPLOAD_FOLDER']
+
+    # Zip file Initialization
+    image_zip = zipfile.ZipFile('images.zip', 'w', compression=zipfile.ZIP_STORED)
+
+    # zip all the files which are inside in the folder
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            image_zip.write(folder_path + '/' + file)
+    image_zip.close()
+
+    # send files
+    try:
+        return send_file('images.zip', mimetype='zip', as_attachment=True)
+    except FileNotFoundError:
+        print("toi aki")
+        abort(404)
+
+    # Delete zip file
+    os.remove("images.zip")
 
 
 def allowed_file(filename):
     allowedExtensions = {'jpg', 'jpeg', 'png', 'gif'}
     return get_file_extension(filename) in allowedExtensions
+
 
 def generate_id(filename):
     # It will be enough with the seconds since we are uploading one image at a time
@@ -64,11 +87,14 @@ def generate_id(filename):
     print(fileExtension)
     return newId + fileExtension
 
+
 def get_file_extension(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower()
 
+
 def remove_file_extension(filename):
     return '.'.join(filename.rsplit('.')[:-1])
+
 
 if __name__ == '__main__':
     app.run()
