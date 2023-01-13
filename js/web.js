@@ -53,7 +53,7 @@ function displayImages() {
             const viewButton = document.createElement("button");
             viewButton.innerText = "View Image";
             viewButton.classList.add("btn");
-            viewButton.classList.add("btn-primary");
+            viewButton.classList.add("btn-info");
             viewButton.addEventListener("click", function () {
                 window.open(relativePath, "Image", "height=720, width=1280");
             });
@@ -62,7 +62,7 @@ function displayImages() {
             const detailsButton = document.createElement("button");
             detailsButton.innerText = "View Image Details";
             detailsButton.classList.add("btn");
-            detailsButton.classList.add("btn-secondary");
+            detailsButton.classList.add("btn-light");
             detailsButton.addEventListener("click", function() {
                 // Remove path. We just want the file name
                 view_image_details(relativePath.replace(/^.*[\\\/]/, ''));
@@ -117,4 +117,8 @@ function view_image_details(filename) {
                             </html>`
             newWindow.document.write(content);
         });
+}
+
+function refresh_page() {
+    location.reload();
 }
