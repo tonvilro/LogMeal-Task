@@ -68,7 +68,6 @@ def list_images():
     try:
         return send_file('images.zip', mimetype='zip', as_attachment=True)
     except FileNotFoundError:
-        print("toi aki")
         abort(404)
 
     # Delete zip file
@@ -82,9 +81,8 @@ def allowed_file(filename):
 
 def generate_id(filename):
     # It will be enough with the seconds since we are uploading one image at a time
-    newId = timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    newId = datetime.now().strftime('%Y%m%d%H%M%S')
     fileExtension = '.' + get_file_extension(filename)
-    print(fileExtension)
     return newId + fileExtension
 
 
