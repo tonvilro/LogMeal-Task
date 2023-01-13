@@ -1,4 +1,4 @@
-import os
+import os, uuid
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -24,14 +24,25 @@ def upload_image():
     if not allowed_file(image.filename):
         return jsonify({'ERROR': 'Invalid image extension. Accepted extensions: JPG, JPEG, PNG, GIF'}), 400
 
-    image.save(os.path.join(app.config['UPLOAD_FOLDER'], image.filename))
+    # Generate Unique Image ID using uuid
+    newId = generate_id(image.filename)
+
+    image.save(os.path.join(app.config['UPLOAD_FOLDER'], newId))
     return jsonify({'SUCCESS': 'We got your image!'}), 200
 
 
 def allowed_file(filename):
-    allowedExtensions = {'jpq', 'jpeg', 'png', 'gif'}
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowedExtensions
+    allowedExtensions = {'jpg', 'jpeg', 'png', 'gif'}
+    return get_file_extension(filename) in allowedExtensions
 
+def generate_id(filename):
+    newId = uuid.uuid4().hex
+    fileExtension = '.' + get_file_extension(filename)
+    print(fileExtension)
+    return newId + fileExtension
+
+def get_file_extension(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower()
 
 if __name__ == '__main__':
     app.run()
