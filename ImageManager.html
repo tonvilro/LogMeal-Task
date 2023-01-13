@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" href="utils/webLogo.png">
+        <link rel="icon" href="img/webLogo.png">
         <title>Ton's Image Manager</title>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -26,8 +26,12 @@
                     <input type="file" id="upload-image" onchange="handleImageUpload()">
                 </div>
                 <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 py-4 bg-white">
-                    <h2>Image List</h2>
-
+                    <h2>Image Viewer</h2>
+                        <div class="container">
+                            <div class="row">
+                                <div id="image-viewer"></div>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -35,6 +39,8 @@
         <script src="js/bootstrap.bundle.min.js"></script>
         <!-- Custom JavaScript Functions -->
         <script src="js/web.js"></script>
+        <!-- JSZip library -->
+        <script src="js/jszip.min.js"></script>
     </body>
 
     <footer class="footer">

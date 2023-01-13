@@ -9,7 +9,7 @@ app = Flask(__name__)
 # The following line is used to allow requests from our JavaScript code (CORS policy)
 cors = CORS(app)
 
-app.config['UPLOAD_FOLDER'] = 'Images'
+app.config['UPLOAD_FOLDER'] = 'ImageDB'
 
 
 @app.route('/')
