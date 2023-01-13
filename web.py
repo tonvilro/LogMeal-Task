@@ -1,4 +1,5 @@
-import os, uuid
+import os
+from datetime import datetime
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -24,7 +25,7 @@ def upload_image():
     if not allowed_file(image.filename):
         return jsonify({'ERROR': 'Invalid image extension. Accepted extensions: JPG, JPEG, PNG, GIF'}), 400
 
-    # Generate Unique Image ID using uuid
+    # Generate Unique Image ID using actual datetime
     newId = generate_id(image.filename)
 
     image.save(os.path.join(app.config['UPLOAD_FOLDER'], newId))
@@ -36,7 +37,8 @@ def allowed_file(filename):
     return get_file_extension(filename) in allowedExtensions
 
 def generate_id(filename):
-    newId = uuid.uuid4().hex
+    # It will be enough with the seconds since we are uploading one image at a time
+    newId = timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     fileExtension = '.' + get_file_extension(filename)
     print(fileExtension)
     return newId + fileExtension
