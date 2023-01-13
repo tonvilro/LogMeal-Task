@@ -15,21 +15,21 @@ def main():
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
     if 'image' not in request.files:
-        return jsonify({'error': 'No image provided'}), 400
+        return jsonify({'ERROR': 'No image provided'}), 400
     image = request.files['image']
 
     if image.filename == '':
-        return jsonify({'error': 'No image provided'}), 400
+        return jsonify({'ERROR': 'No image sent'}), 400
 
     if not allowed_file(image.filename):
-        return jsonify({'error': 'Invalid image extension'}), 400
+        return jsonify({'ERROR': 'Invalid image extension. Accepted extensions: JPG, JPEG, PNG, GIF'}), 400
 
     image.save(os.path.join(app.config['UPLOAD_FOLDER'], image.filename))
-    return jsonify({'message': 'We got your image!'}), 200
+    return jsonify({'SUCCESS': 'We got your image!'}), 200
 
 
 def allowed_file(filename):
-    allowedExtensions = {'png', 'jpg', 'jpeg', 'gif'}
+    allowedExtensions = {'jpq', 'jpeg', 'png', 'gif'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowedExtensions
 
 
