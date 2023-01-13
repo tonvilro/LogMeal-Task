@@ -2,7 +2,7 @@ function handleImageUpload() {
     let input = document.getElementById("upload-image");
     let image = input.files[0];
 
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append('image', image);
 
     fetch('http://127.0.0.1:5000/upload_image', {
@@ -11,10 +11,10 @@ function handleImageUpload() {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
-        // do something with the response data
+        alert(data.msg);
     })
     .catch(error => {
       console.error('Error:', error);
     });
 }
+

@@ -2,11 +2,14 @@ import os
 import zipfile
 from datetime import datetime
 from flask import Flask, jsonify, request, abort, send_file
+from flask_cors import CORS
 from PIL import Image
 
 app = Flask(__name__)
-ImageFolder = 'Images'
-app.config['UPLOAD_FOLDER'] = ImageFolder
+# The following line is used to allow requests from our JavaScript code (CORS policy)
+cors = CORS(app)
+
+app.config['UPLOAD_FOLDER'] = 'Images'
 
 
 @app.route('/')
@@ -18,20 +21,20 @@ def main():
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
     if 'image' not in request.files:
-        return jsonify({'ERROR': 'No image provided'}), 400
+        return jsonify({'msg': 'No image provided'}), 400
     image = request.files['image']
 
     if image.filename == '':
-        return jsonify({'ERROR': 'No image sent'}), 400
+        return jsonify({'msg': 'No image sent'}), 400
 
     if not allowed_file(image.filename):
-        return jsonify({'ERROR': 'Invalid extension. Accepted image extensions: JPG, JPEG, PNG, GIF'}), 400
+        return jsonify({'msg': 'Invalid extension. Accepted image extensions: JPG, JPEG, PNG, GIF'}), 400
 
     # Generate Unique Image ID using actual datetime
     image_id = generate_id(image.filename)
 
     image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_id))
-    return jsonify({'OK': 'We got your image!', 'ID': image_id}), 200
+    return jsonify({'msg': 'We got your image!', 'ID': image_id}), 200
 
 
 @app.route('/analyze_image/<image_id>', methods=['GET'])
@@ -42,13 +45,13 @@ def analyze_image(image_id):
 
         with Image.open(image_path) as img:
             width, height = img.size
-            return jsonify({'OK': 'Image found!', 'height': height, 'width': width}), 200
+            return jsonify({'msg': 'Image found!', 'height': height, 'width': width}), 200
 
     except IOError:
-        return jsonify({'ERROR': f'Image not found: {image_id}'}), 404
+        return jsonify({'msg': f'Image not found: {image_id}'}), 404
 
     except Exception as e:
-        return jsonify({'ERROR': str(e)}), 500
+        return jsonify({'msg': str(e)}), 500
 
 
 @app.route('/list_images', methods=['GET'])
