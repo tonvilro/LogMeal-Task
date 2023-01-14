@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "51fc67cb-14ae-4066-b116-3127c56e4851",
+		"name": "Image Manager Postman Test Requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/upload_image",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/tonvi/Pictures/medium_220122_ALD_SS_22_VINTAGE_JK_SHOT_15_014_018165e910.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/upload_image",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"upload_image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/analyze_image/filename",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/analyze_image/20230113105330.jpg",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"analyze_image",
+						"20230113105330.jpg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/list_images",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/list_images",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"list_images"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

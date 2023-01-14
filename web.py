@@ -58,6 +58,9 @@ def analyze_image(image_id):
 def list_images():
     folder_path = app.config['UPLOAD_FOLDER']
 
+    # Delete previous zip file (not really necessary)
+    os.remove("images.zip")
+
     # Zip file Initialization
     image_zip = zipfile.ZipFile('images.zip', 'w', compression=zipfile.ZIP_STORED)
 
@@ -72,9 +75,6 @@ def list_images():
         return send_file('images.zip', mimetype='zip', as_attachment=True)
     except FileNotFoundError:
         abort(404)
-
-    # Delete zip file
-    os.remove("images.zip")
 
 
 def allowed_file(filename):
