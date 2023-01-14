@@ -57,7 +57,7 @@ function displayImages() {
             viewButton.classList.add("btn");
             viewButton.classList.add("btn-dark");
             viewButton.addEventListener("click", function () {
-                window.open(relativePath, "Image", "height=720, width=1280");
+                window.open(relativePath, "Image");
             });
 
             // Create View Image Details button
