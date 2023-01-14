@@ -1,3 +1,12 @@
+.header {
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-bottom: 20px;
+    padding-top: 50px;
+    text-align: center;
+}
+
 .footer {
     position: fixed;
     left: 0;

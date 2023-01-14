@@ -1,4 +1,5 @@
 
+// Show available image on page load
 window.onload = function() {
     displayImages();
 };
@@ -18,20 +19,15 @@ function handleImageUpload() {
     })
     .then(response => response.json())
     .then(data => {
-        responseData = data.msg;
-        console.log(responseData)
+        // We will also reload the page to reorganize the pictures
+        location.reload()
+        // Give feedback to the user
+        console.log(data.msg)
+        alert(data.msg)
     })
     .catch(error => {
-      console.error('Error:', error);
+        alert('The server is not available. Run web.py and try again!');
     });
-
-    // We update the table grid every time we upload a new image
-    displayImages();
-    // We will also reload the page to reorganize the pictures
-    //location.reload();
-    // Give feedback to the user
-    console.log(responseData)
-    alert(responseData);
 }
 
 function displayImages() {
@@ -84,7 +80,7 @@ function displayImages() {
       });
     })
     .catch(error => {
-      console.log('Error:', error);
+        alert('The server is not available. Run web.py and try again!');
     });
 }
 
@@ -122,7 +118,10 @@ function view_image_details(filename) {
                                 </body>
                             </html>`
             newWindow.document.write(content);
-        });
+        })
+        .catch(error => {
+        alert('The server is not available. Run web.py and try again!');
+    });
 }
 
 function refresh_page() {

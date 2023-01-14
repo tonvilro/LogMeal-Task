@@ -59,7 +59,8 @@ def list_images():
     folder_path = app.config['UPLOAD_FOLDER']
 
     # Delete previous zip file (not really necessary)
-    os.remove("images.zip")
+    if os.path.exists('images.zip'):
+        os.remove("images.zip")
 
     # Zip file Initialization
     image_zip = zipfile.ZipFile('images.zip', 'w', compression=zipfile.ZIP_STORED)
@@ -70,14 +71,9 @@ def list_images():
             image_zip.write(folder_path + '/' + file)
     image_zip.close()
 
-    # We send the binary file, so we can remove the zip file from the folder
-    with open("images.zip", "rb") as f:
-        file_binary = f.read()
-    os.remove("images.zip")
-
     # send files
     try:
-        return send_file(file_binary, as_attachment=True)
+        return send_file('images.zip', mimetype='zip', as_attachment=True)
     except FileNotFoundError:
         abort(404)
 
