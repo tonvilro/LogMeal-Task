@@ -1,5 +1,4 @@
-
-// Show available image on page load
+// Show available images on page load
 window.onload = function() {
     displayImages();
 };
