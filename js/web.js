@@ -119,7 +119,7 @@ function view_image_details(filename) {
                                     <link rel="stylesheet" href="css/bootstrap.min.css">
                                 </head>
                                 
-                                <body style="width: 50%; margin: 0 auto;">
+                                <body style="width: 50%; margin: 0 auto; background-color: #FDF4ED">
                                     <div class="hero-unit" style="padding-bottom: 20px; padding-top: 10px">
                                         <h1 style="justify-content: center">Image Details</h1>
                                     </div>
