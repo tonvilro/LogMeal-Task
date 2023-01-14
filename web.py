@@ -21,14 +21,14 @@ def main():
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
     if 'image' not in request.files:
-        return jsonify({'msg': 'No image provided'}), 400
+        return jsonify({'msg': 'Error: No image provided'}), 400
     image = request.files['image']
 
     if image.filename == '':
-        return jsonify({'msg': 'No image sent'}), 400
+        return jsonify({'msg': 'Error: No image sent'}), 400
 
     if not allowed_file(image.filename):
-        return jsonify({'msg': 'Invalid extension. Accepted image extensions: JPG, JPEG, PNG, GIF'}), 400
+        return jsonify({'msg': 'Error: Invalid extension. Accepted image extensions: JPG, JPEG, PNG, GIF'}), 400
 
     # Generate Unique Image ID using actual datetime
     image_id = generate_id(image.filename)
@@ -48,10 +48,10 @@ def analyze_image(image_id):
             return jsonify({'msg': 'Image found!', 'height': height, 'width': width}), 200
 
     except IOError:
-        return jsonify({'msg': f'Image not found: {image_id}'}), 404
+        return jsonify({'msg': f'Error: Image not found: {image_id}'}), 404
 
     except Exception as e:
-        return jsonify({'msg': str(e)}), 500
+        return jsonify({'msg': f'Error: {str(e)}'}), 500
 
 
 @app.route('/list_images', methods=['GET'])
@@ -68,6 +68,7 @@ def list_images():
     # zip all the files which are inside in the folder
     for root, dirs, files in os.walk(folder_path):
         for file in files:
+            # TODO: use os join
             image_zip.write(folder_path + '/' + file)
     image_zip.close()
 
@@ -76,6 +77,16 @@ def list_images():
         return send_file('images.zip', mimetype='zip', as_attachment=True)
     except FileNotFoundError:
         abort(404)
+
+
+@app.route('/delete_image/<image_id>', methods=['DELETE'])
+def delete_image(image_id):
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], image_id)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        return jsonify({'msg': f'{image_id} was deleted successfully'}), 200
+    else:
+        return jsonify({'msg': f'Error: {image_id} not found'}), 404
 
 
 def allowed_file(filename):

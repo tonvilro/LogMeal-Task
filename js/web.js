@@ -19,7 +19,7 @@ function handleImageUpload() {
     })
     .then(response => response.json())
     .then(data => {
-        // We will also reload the page to reorganize the pictures
+        // Reload the page to update and reorganize gallery
         location.reload()
         // Give feedback to the user
         console.log(data.msg)
@@ -70,10 +70,21 @@ function displayImages() {
                 view_image_details(relativePath.replace(/^.*[\\\/]/, ''));
             });
 
+            // Create Delete Image button
+            const deleteButton = document.createElement("button");
+            deleteButton.innerText = "Delete";
+            deleteButton.classList.add("btn");
+            deleteButton.classList.add("btn-danger");
+            deleteButton.addEventListener("click", function() {
+                // Remove path. We just want the file name
+                delete_image(relativePath.replace(/^.*[\\\/]/, ''));
+            });
+
             const div = document.createElement("div");
             div.appendChild(img);
             div.appendChild(viewButton);
             div.appendChild(detailsButton);
+            div.appendChild(deleteButton);
             div.classList.add("text-center"); // center the button
             imageViewer.appendChild(div);
         });
@@ -120,6 +131,26 @@ function view_image_details(filename) {
             newWindow.document.write(content);
         })
         .catch(error => {
+        alert('The server is not available. Run web.py and try again!');
+    });
+}
+
+function delete_image(filename) {
+    fetch(`http://127.0.0.1:5000/delete_image/${filename}`, {
+        method: 'DELETE'
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Reload the page to update and reorganize gallery
+        location.reload()
+
+        if (data.error) {
+            alert(data.msg);
+        } else {
+            alert(data.msg);
+        }
+    })
+    .catch(error => {
         alert('The server is not available. Run web.py and try again!');
     });
 }

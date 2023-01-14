@@ -81,6 +81,29 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "/delete_image/filename",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/delete_image/20230114121337.jpg",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"delete_image",
+						"20230114121337.jpg"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
