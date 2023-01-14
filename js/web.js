@@ -10,13 +10,16 @@ function handleImageUpload() {
     let formData = new FormData();
     formData.append('image', image);
 
+    let responseData;
+
     fetch('http://127.0.0.1:5000/upload_image', {
         method: 'POST',
         body: formData
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.msg);
+        responseData = data.msg;
+        console.log(responseData)
     })
     .catch(error => {
       console.error('Error:', error);
@@ -25,7 +28,10 @@ function handleImageUpload() {
     // We update the table grid every time we upload a new image
     displayImages();
     // We will also reload the page to reorganize the pictures
-    // location.reload();
+    //location.reload();
+    // Give feedback to the user
+    console.log(responseData)
+    alert(responseData);
 }
 
 function displayImages() {
@@ -53,7 +59,7 @@ function displayImages() {
             const viewButton = document.createElement("button");
             viewButton.innerText = "View Image";
             viewButton.classList.add("btn");
-            viewButton.classList.add("btn-info");
+            viewButton.classList.add("btn-dark");
             viewButton.addEventListener("click", function () {
                 window.open(relativePath, "Image", "height=720, width=1280");
             });

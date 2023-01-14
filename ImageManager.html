@@ -12,15 +12,15 @@
         <link rel="stylesheet" href="css/custom.css" />
     </head>
 
-    <body>
-        <div class="container my-3">
-            <div class="row">
-              <div class="hero-unit" style="padding-top: 30px; padding-bottom: 30px">
-                <h1>Image Manager</h1>
+    <body style="background-color: #FDF4ED">
+        <div class="row" style="width: 100%; background-image: url('img/header.jpg'); background-repeat: no-repeat; background-size: cover; padding-bottom: 20px; padding-top: 50px; text-align: center">
+              <div class="hero-unit" style="padding-bottom: 30px">
+                <h1>IMAGE MANAGER</h1>
                 <p>Upload, view, and get image details with Image Manager!</p>
               </div>
-            </div>
-            <div class="row">
+        </div>
+        <div class="container my-3">
+            <div class="row" style="padding-top: 20px">
                 <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 py-4 bg-white" style="padding-bottom: 20px">
                     <h2>Upload an Image</h2>
                     <input type="file" id="upload-image" onchange="handleImageUpload()">
@@ -29,7 +29,7 @@
 
                     <div class="row">
                       <div class="col-sm-6">
-                        <h2>Image Viewer</h2>
+                        <h2>Your gallery</h2>
                       </div>
                       <div class="col-sm-6 d-flex justify-content-end">
                         <button type="button"  class="btn btn-dark float-right" onclick="refresh_page()">Refresh</button>
@@ -52,7 +52,9 @@
         <script src="js/jszip.min.js"></script>
     </body>
 
-    <footer class="footer">
-      <p>Ton Vilà Roset - Image Manager - 2023</p>
+    <div style="padding-bottom: 70px; ">
+        <footer class="footer" style="background-image: url('img/footer.jpg');;">
+      <p style="padding-top: 12px">Ton Vilà Roset - Image Manager - 2023</p>
     </footer>
+    </div>
 </html>
