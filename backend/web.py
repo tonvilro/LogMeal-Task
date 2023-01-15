@@ -59,11 +59,11 @@ def list_images():
     folder_path = app.config['UPLOAD_FOLDER']
 
     # Delete previous zip file (not really necessary)
-    if os.path.exists('images.zip'):
-        os.remove("images.zip")
+    if os.path.exists('../images.zip'):
+        os.remove("../images.zip")
 
     # Zip file Initialization
-    image_zip = zipfile.ZipFile('images.zip', 'w', compression=zipfile.ZIP_STORED)
+    image_zip = zipfile.ZipFile('../images.zip', 'w', compression=zipfile.ZIP_STORED)
 
     # zip all the files which are inside in the folder
     for root, dirs, files in os.walk(folder_path):
@@ -74,7 +74,7 @@ def list_images():
 
     # send files
     try:
-        return send_file('images.zip', mimetype='zip', as_attachment=True)
+        return send_file('../images.zip', mimetype='zip', as_attachment=True)
     except FileNotFoundError:
         abort(404)
 
@@ -110,4 +110,4 @@ def remove_file_extension(filename):
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
