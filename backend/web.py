@@ -48,7 +48,7 @@ def upload_image():
         # Generate Unique Image ID using actual datetime
         image_id = generate_id(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_id))
-        return jsonify({'msg': f'We got your image! ID: {image_id}', 'ID': image_id}), 200
+        return jsonify({'msg': f'We got your image!\nID: {image_id}', 'ID': image_id}), 200
 
     if 'image_url' in request.form:
         image_url = request.form['image_url']
@@ -56,13 +56,15 @@ def upload_image():
             urllib.request.urlretrieve(image_url, 'temp.jpg')
             with open('temp.jpg', 'rb') as f:
                 image_binary = f.read()
+                if image_binary is None:
+                    return jsonify({'msg': 'Error: We can not retrieve the provided url, sorry!'}), 400
             os.remove('temp.jpg')
         except:
-            return jsonify({'msg': 'Error: Failed to download image from URL'}), 400
+            return jsonify({'msg': 'Error: We can not retrieve the provided url, sorry!'}), 400
         image_id = generate_id(image_url.rsplit('/', 1)[1])
         with open(os.path.join(app.config['UPLOAD_FOLDER'], image_id), 'wb') as f:
             f.write(image_binary)
-        return jsonify({'msg': f'We got your image! ID: {image_id}', 'ID': image_id}), 200
+        return jsonify({'msg': f'We got your image!\nID: {image_id}', 'ID': image_id}), 200
 
 
 @app.route('/analyze_image/<image_id>', methods=['GET'])
@@ -149,11 +151,21 @@ def delete_all_images():
 
 
 def allowed_file(filename):
+    """
+    Check if the file is an allowed image file.
+    :param filename: string, name of the file
+    :return: boolean, True if the file is an image, False otherwise
+    """
     allowedExtensions = {'jpg', 'jpeg', 'png', 'gif'}
     return get_file_extension(filename) in allowedExtensions
 
 
 def generate_id(filename):
+    """
+    Generate a unique id for the file.
+    :param filename: string, name of the file
+    :return: string, unique id for the file
+    """
     # It will be enough with the seconds since we are uploading one image at a time
     newId = datetime.now().strftime('%Y%m%d%H%M%S')
     fileExtension = '.' + get_file_extension(filename)
@@ -161,10 +173,20 @@ def generate_id(filename):
 
 
 def get_file_extension(filename):
+    """
+    Get the file extension of the file.
+    :param filename: string, name of the file
+    :return: string, file extension of the file
+    """
     return '.' in filename and filename.rsplit('.', 1)[1].lower()
 
 
 def remove_file_extension(filename):
+    """
+    Remove the file extension from the file name.
+    :param filename: string, name of the file
+    :return: string, file name without file extension
+    """
     return '.'.join(filename.rsplit('.')[:-1])
 
 

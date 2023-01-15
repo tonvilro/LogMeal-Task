@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="img/webLogo.png">
         <title>Ton's Image Manager</title>
-        <!-- Bootstrap -->
+        <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="css/custom.css" />
+        <link rel="stylesheet" href="css/custom.css">
     </head>
 
     <body style="background-color: #FDF4ED">
@@ -22,11 +22,14 @@
         <div class="container my-3">
             <div class="row" style="padding-top: 20px">
                 <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 py-4 bg-white" style="padding-bottom: 20px">
-                    <input type="file" id="upload-image" accept="image/*">
+                    <h2>Upload an image</h2>
+                    <label for="upload-image">Import image:</label>
+                    <input class="form-control" type="file" id="upload-image" onchange="preview()">
                     <br>
-                    <label for="upload-image-url">Or image url:</label>
-                    <input type="text" id="upload-image-url">
-                    <button onclick="handleImageUpload()">Upload Image</button>
+                    <label for="upload-image-url">Or provide image url:</label>
+                    <input type="text" class="form-control" id="upload-image-url">
+                    <br>
+                    <button type="button" class="btn btn-secondary float-right" onclick="handleImageUpload()">Upload Image</button>
                 </div>
                 <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 py-4 bg-white">
                     <div class="row">
@@ -34,8 +37,8 @@
                         <h2>Your gallery</h2>
                       </div>
                       <div class="col-sm-6 d-flex justify-content-end">
-                        <button type="button"  class="btn btn-dark float-right" onclick="refresh_page()">Refresh</button>
-                        <button type="button"  class="btn btn-danger btn-outline-dark float-right" onclick="deleteAllImages()">Delete All</button>
+                        <button type="button" onclick="refresh_page()" style="border: 0; padding: 0; background: transparent"><img src="img/refresh.png" alt="Refresh" style=" height: 2em; object-fit: contain"></button>
+                        <button type="button" class="btn btn-danger float-right" onclick="deleteAllImages()">Delete All</button>
                       </div>
                     </div>
                     <div class="container">
