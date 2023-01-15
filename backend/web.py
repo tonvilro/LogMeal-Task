@@ -7,20 +7,32 @@ from flask_cors import CORS
 from PIL import Image
 from urllib.request import urlretrieve
 
+# Initialize the Flask application
 app = Flask(__name__)
-# The following line is used to allow requests from our JavaScript code (CORS policy)
+
+# Enable Cross-Origin Resource Sharing (CORS)
 cors = CORS(app)
 
+# Set the path for saving images
 app.config['UPLOAD_FOLDER'] = 'ImageDB'
 
 
 @app.route('/')
 def main():
+    """
+    Main route for the application, returns a welcome message.
+    """
     return jsonify('Welcome to the Log Meal Task!')
 
 
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
+    """
+    Handles image uploads.
+    Expects the image file or image url to be sent in the request.
+    Accepts image files with extensions JPG, JPEG, PNG, and GIF.
+    Returns a json response with the image ID and a message.
+    """
     if 'image' not in request.files and 'image_url' not in request.form:
         return jsonify({'msg': 'Error: No image provided'}), 400
 
@@ -36,7 +48,7 @@ def upload_image():
         # Generate Unique Image ID using actual datetime
         image_id = generate_id(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_id))
-        return jsonify({'msg': 'We got your image!', 'ID': image_id}), 200
+        return jsonify({'msg': f'We got your image! ID: {image_id}', 'ID': image_id}), 200
 
     if 'image_url' in request.form:
         image_url = request.form['image_url']
@@ -50,11 +62,16 @@ def upload_image():
         image_id = generate_id(image_url.rsplit('/', 1)[1])
         with open(os.path.join(app.config['UPLOAD_FOLDER'], image_id), 'wb') as f:
             f.write(image_binary)
-        return jsonify({'msg': 'We got your image!', 'ID': image_id}), 200
+        return jsonify({'msg': f'We got your image! ID: {image_id}', 'ID': image_id}), 200
 
 
 @app.route('/analyze_image/<image_id>', methods=['GET'])
 def analyze_image(image_id):
+    """
+    Handles image analysis.
+    Expects an image filename (with extension).
+    Returns a json response with the image height and width.
+    """
     try:
         folder_path = app.config['UPLOAD_FOLDER']
         image_path = f"{folder_path}/{image_id}"
@@ -72,6 +89,11 @@ def analyze_image(image_id):
 
 @app.route('/list_images', methods=['GET'])
 def list_images():
+    """
+    Handles image listing.
+    Expects nothing.
+    Returns a zip response that contains all the available images.
+    """
     folder_path = app.config['UPLOAD_FOLDER']
 
     # Delete previous zip file (not really necessary)
@@ -97,6 +119,11 @@ def list_images():
 
 @app.route('/delete_image/<image_id>', methods=['DELETE'])
 def delete_image(image_id):
+    """
+    Handles image deleting.
+    Expects an image filename (with extension).
+    Returns a json response indicating if there was success or not.
+    """
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], image_id)
     if os.path.exists(file_path):
         os.remove(file_path)
@@ -107,6 +134,11 @@ def delete_image(image_id):
 
 @app.route('/delete_all_images', methods=['DELETE'])
 def delete_all_images():
+    """
+    Handles deleting all images .
+    Expects nothing.
+    Returns a json response indicating if there was success or not.
+    """
     image_folder = app.config['UPLOAD_FOLDER']
     image_files = [f for f in os.listdir(image_folder) if os.path.isfile(os.path.join(image_folder, f))]
     if not image_files:
