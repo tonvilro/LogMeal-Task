@@ -47,7 +47,7 @@ To develop the given task, I followed these steps:
 2. The second part of the project was to focus on the frontend. First, creating a html base layout connected with a javascript file to handle requests and define some necessary functions and parameters. Once everything was correctly connected and tested. I started giving some format to everything. Added Bootstrap to be able to add better looking components and give the page a more solid look. To be able to issue local requests CORS had to be correctly configured.
 
 3. The last step was documenting some functions that were still not commented. Creating the containers for the two separate services and join them using a docker compose file was a bit more tedious since I had no previous experience at all. After doing my research and some problems getting Docker Desktop I was able to make it work.
-   - On the way I added a couple extra functionalities like being able to download or delete the pictures.
+   - On the way I added a couple extra functionalities like being able to download or delete an image.
 
 
 Greetings!<br>
