@@ -108,8 +108,7 @@ def list_images():
     # zip all the files which are inside in the folder
     for root, dirs, files in os.walk(folder_path):
         for file in files:
-            # TODO: use os join
-            image_zip.write(folder_path + '/' + file)
+            image_zip.write(os.path.join(folder_path, file))
     image_zip.close()
 
     # send files
