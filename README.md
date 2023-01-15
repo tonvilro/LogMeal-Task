@@ -35,5 +35,5 @@ The last step was documenting some functions that were still not commented. Crea
 On the way I added a couple extra functionalities like being able to Download or Deleting the pictures.
 
 
-Greetings!
+Greetings!<br>
 Ton
