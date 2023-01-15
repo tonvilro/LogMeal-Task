@@ -156,6 +156,21 @@ function delete_image(filename) {
     });
 }
 
+function deleteAllImages() {
+    fetch(`${backendUrl}/delete_all_images`, {
+        method: 'DELETE'
+    })
+    .then(response => response.json())
+    .then(data => {
+        location.reload()
+        console.log(data.msg)
+        alert(data.msg)
+    })
+    .catch(error => {
+        alert('The server is not available. Run web.py and try again!');
+    });
+}
+
 function remove_file_extension(filename) {
     return filename.replace(/\.[^/.]+$/, "");
 }

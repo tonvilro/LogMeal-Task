@@ -19,7 +19,6 @@ def main():
     return jsonify('Welcome to the Log Meal Task!')
 
 
-# TODO: Review HTTP conventions
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
     if 'image' not in request.files and 'image_url' not in request.form:
@@ -52,7 +51,6 @@ def upload_image():
         with open(os.path.join(app.config['UPLOAD_FOLDER'], image_id), 'wb') as f:
             f.write(image_binary)
         return jsonify({'msg': 'We got your image!', 'ID': image_id}), 200
-
 
 
 @app.route('/analyze_image/<image_id>', methods=['GET'])
@@ -105,6 +103,17 @@ def delete_image(image_id):
         return jsonify({'msg': f'{image_id} was deleted successfully'}), 200
     else:
         return jsonify({'msg': f'Error: {image_id} not found'}), 404
+
+
+@app.route('/delete_all_images', methods=['DELETE'])
+def delete_all_images():
+    image_folder = app.config['UPLOAD_FOLDER']
+    image_files = [f for f in os.listdir(image_folder) if os.path.isfile(os.path.join(image_folder, f))]
+    if not image_files:
+        return jsonify({'msg': 'Error: No images found'}), 404
+    for image_file in image_files:
+        os.remove(os.path.join(image_folder, image_file))
+    return jsonify({'msg': 'All images have been deleted successfully'}), 200
 
 
 def allowed_file(filename):
