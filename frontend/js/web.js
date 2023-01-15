@@ -45,21 +45,18 @@ function displayImages() {
         // Get the file data as a Blob
         zip.file(relativePath).async("blob").then(function (blob) {
 
-            console.log(relativePath);
+            // Get Image ID without path
+            let imageID = relativePath.replace(/^.*[\\\/]/, '');
 
             const img = document.createElement('img');
             img.src = URL.createObjectURL(blob);
             img.classList.add("img-responsive");
             img.classList.add("img-padding"); // add padding class
 
-            // Create View Image button
-            const viewButton = document.createElement("button");
-            viewButton.innerText = "View Image";
-            viewButton.classList.add("btn");
-            viewButton.classList.add("btn-dark");
-            viewButton.addEventListener("click", function () {
-                window.open(relativePath, "Image");
-            });
+            const ImageIdText = document.createElement("p");
+            // Show ID without extension
+            ImageIdText.innerText = "Image ID: " + remove_file_extension(imageID);
+            ImageIdText.classList.add("img-id-text");
 
             // Create View Image Details button
             const detailsButton = document.createElement("button");
@@ -67,8 +64,7 @@ function displayImages() {
             detailsButton.classList.add("btn");
             detailsButton.classList.add("btn-light");
             detailsButton.addEventListener("click", function() {
-                // Remove path. We just want the file name
-                view_image_details(relativePath.replace(/^.*[\\\/]/, ''));
+                view_image_details(imageID);
             });
 
             // Create Delete Image button
@@ -77,13 +73,12 @@ function displayImages() {
             deleteButton.classList.add("btn");
             deleteButton.classList.add("btn-danger");
             deleteButton.addEventListener("click", function() {
-                // Remove path. We just want the file name
-                delete_image(relativePath.replace(/^.*[\\\/]/, ''));
+                delete_image(imageID);
             });
 
             const div = document.createElement("div");
             div.appendChild(img);
-            div.appendChild(viewButton);
+            div.appendChild(ImageIdText);
             div.appendChild(detailsButton);
             div.appendChild(deleteButton);
             div.classList.add("text-center"); // center the button
@@ -98,7 +93,7 @@ function displayImages() {
 
 function view_image_details(filename) {
     const windowSizeX = 480;
-    const windowSizeY = 220;
+    const windowSizeY = 250;
     const leftW = (screen.width / 2) - (windowSizeX / 2);
     const topW = (screen.height / 2) - (windowSizeY / 2);
     const newWindow = window.open('', "Image Details", `left=${leftW},top=${topW}, height=${windowSizeY}, width=${windowSizeX}`);
@@ -106,7 +101,8 @@ function view_image_details(filename) {
         .then(response => response.json())
         .then(data => {
 
-            let noExtensionFilename = filename.replace(/\.[^/.]+$/, "")
+            let noExtensionFilename = remove_file_extension(filename)
+            let extension = get_file_extension(filename)
 
             let content = `<!DOCTYPE html>
                             <html lang="en">
@@ -127,6 +123,7 @@ function view_image_details(filename) {
                                     <p style="justify-content: center">Image ID: ${noExtensionFilename}</p>
                                     <p style="justify-content: center">Height: ${data.height}px</p>
                                     <p style="justify-content: center">Width: ${data.width}px</p>
+                                    <p style="justify-content: center">Type: ${extension}</p>
                                 </body>
                             </html>`
             newWindow.document.write(content);
@@ -156,6 +153,14 @@ function delete_image(filename) {
     });
 }
 
+function remove_file_extension(filename) {
+    return filename.replace(/\.[^/.]+$/, "");
+}
+
+function get_file_extension(filename) {
+    let extension = filename.split('.').pop();
+    return extension.toUpperCase();
+}
 function refresh_page() {
     location.reload();
 }
