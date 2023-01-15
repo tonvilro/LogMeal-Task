@@ -90,7 +90,7 @@ function displayImages() {
             const detailsButton = document.createElement("button");
             detailsButton.innerText = "View Image Details";
             detailsButton.classList.add("btn");
-            detailsButton.classList.add("btn-light");
+            detailsButton.classList.add("btn-secondary");
             // Add click event listener to button
             detailsButton.addEventListener("click", function() {
                 view_image_details(imageID);
@@ -106,6 +106,16 @@ function displayImages() {
                 delete_image(imageID);
             });
 
+            // Create Download button
+            const downloadButton = document.createElement("button");
+            downloadButton.innerText = "Download";
+            downloadButton.classList.add("btn");
+            downloadButton.classList.add("btn-success");
+            // Add click event listener to button
+            downloadButton.addEventListener("click", function() {
+            download_image(imageID, blob);
+            });
+
             // Create a div element to hold the image, text and buttons
             const div = document.createElement("div");
             // Append the image, text and buttons to the div
@@ -113,6 +123,7 @@ function displayImages() {
             div.appendChild(ImageIdText);
             div.appendChild(detailsButton);
             div.appendChild(deleteButton);
+            div.appendChild(downloadButton);
             // Add class to center the div
             div.classList.add("text-center");
             // Append the div to the image viewer element
@@ -255,6 +266,27 @@ function get_file_extension(filename) {
     let extension = filename.split('.').pop();
     return extension.toUpperCase();
 }
+
+
+/**
+ * download_image - function to download image
+ *
+ * @param {string} imageID
+ * @param {Blob} blob
+ * @returns {undefined}
+ */
+ function download_image(imageID, blob) {
+    // Create a new Blob object with the image data and the image type
+    const imageBlob = new Blob([blob], { type: "image/jpeg" });
+    // Create a new link element
+    const link = document.createElement("a");
+    // Set the href of the link to the URL of the Blob object
+    link.href = URL.createObjectURL(imageBlob);
+    // Set the download attribute of the link to the image ID
+    link.download = imageID;
+    // Simulate a click on the link to trigger the browser to download the image
+    link.click();
+  }
 
 
 /**
