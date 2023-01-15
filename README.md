@@ -33,3 +33,7 @@ The second part of the project was to focus on the frontend. First, creating a h
 The last step was documenting some functions that were still not commented. Creating the containers for the two separate services and join them using a docker compose file was a bit more tedious since I had no previous experience at all. After doing my research and some problems getting Docker Desktop I was able to make it work.
 
 On the way I added a couple extra functionalities like being able to Download or Deleting the pictures.
+
+
+Greetings!
+Ton
