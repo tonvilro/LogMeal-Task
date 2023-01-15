@@ -1,9 +1,11 @@
 import os
+import urllib
 import zipfile
 from datetime import datetime
 from flask import Flask, jsonify, request, abort, send_file
 from flask_cors import CORS
 from PIL import Image
+from urllib.request import urlretrieve
 
 app = Flask(__name__)
 # The following line is used to allow requests from our JavaScript code (CORS policy)
@@ -20,21 +22,37 @@ def main():
 # TODO: Review HTTP conventions
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
-    if 'image' not in request.files:
+    if 'image' not in request.files and 'image_url' not in request.form:
         return jsonify({'msg': 'Error: No image provided'}), 400
-    image = request.files['image']
 
-    if image.filename == '':
-        return jsonify({'msg': 'Error: No image sent'}), 400
+    if 'image' in request.files:
+        image = request.files['image']
 
-    if not allowed_file(image.filename):
-        return jsonify({'msg': 'Error: Invalid extension. Accepted image extensions: JPG, JPEG, PNG, GIF'}), 400
+        if image.filename == '':
+            return jsonify({'msg': 'Error: No image sent'}), 400
 
-    # Generate Unique Image ID using actual datetime
-    image_id = generate_id(image.filename)
+        if not allowed_file(image.filename):
+            return jsonify({'msg': 'Error: Invalid extension. Accepted image extensions: JPG, JPEG, PNG, GIF'}), 400
 
-    image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_id))
-    return jsonify({'msg': 'We got your image!', 'ID': image_id}), 200
+        # Generate Unique Image ID using actual datetime
+        image_id = generate_id(image.filename)
+        image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_id))
+        return jsonify({'msg': 'We got your image!', 'ID': image_id}), 200
+
+    if 'image_url' in request.form:
+        image_url = request.form['image_url']
+        try:
+            urllib.request.urlretrieve(image_url, 'temp.jpg')
+            with open('temp.jpg', 'rb') as f:
+                image_binary = f.read()
+            os.remove('temp.jpg')
+        except:
+            return jsonify({'msg': 'Error: Failed to download image from URL'}), 400
+        image_id = generate_id(image_url.rsplit('/', 1)[1])
+        with open(os.path.join(app.config['UPLOAD_FOLDER'], image_id), 'wb') as f:
+            f.write(image_binary)
+        return jsonify({'msg': 'We got your image!', 'ID': image_id}), 200
+
 
 
 @app.route('/analyze_image/<image_id>', methods=['GET'])

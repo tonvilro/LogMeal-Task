@@ -22,11 +22,13 @@
         <div class="container my-3">
             <div class="row" style="padding-top: 20px">
                 <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 py-4 bg-white" style="padding-bottom: 20px">
-                    <h2>Upload an Image</h2>
-                    <input type="file" id="upload-image" onchange="handleImageUpload()">
+                    <input type="file" id="upload-image" accept="image/*">
+                    <br>
+                    <label for="upload-image-url">Or image url:</label>
+                    <input type="text" id="upload-image-url">
+                    <button onclick="handleImageUpload()">Upload Image</button>
                 </div>
                 <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 py-4 bg-white">
-
                     <div class="row">
                       <div class="col-sm-6">
                         <h2>Your gallery</h2>
@@ -35,7 +37,6 @@
                         <button type="button"  class="btn btn-dark float-right" onclick="refresh_page()">Refresh</button>
                       </div>
                     </div>
-
                     <div class="container">
                         <div class="row">
                             <div id="image-viewer"></div>

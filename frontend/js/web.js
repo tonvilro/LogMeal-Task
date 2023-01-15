@@ -8,11 +8,14 @@ window.onload = function() {
 function handleImageUpload() {
     let input = document.getElementById("upload-image");
     let image = input.files[0];
+    let imageUrl = document.getElementById("upload-image-url").value;
 
     let formData = new FormData();
-    formData.append('image', image);
-
-    let responseData;
+    if (imageUrl) {
+        formData.append('image_url', imageUrl);
+    } else {
+        formData.append('image', image);
+    }
 
     fetch(`${backendUrl}/upload_image`, {
         method: 'POST',
