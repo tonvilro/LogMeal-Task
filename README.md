@@ -8,6 +8,8 @@ Simple web application that allows users to upload images and perform basic imag
 
 2. A back-end RESTful API built using Flask and Python. The API handles image uploads, analysis, and listing, and provides a set of endpoints for the front-end to interact with.
 
+![image](readmeHeader.png)
+
 ### Functionalities:
 
 - The user can upload an image either from their computer or by providing a source URL.
@@ -20,12 +22,12 @@ Simple web application that allows users to upload images and perform basic imag
 The API will return an error message following the HTTP conventions. The error will be communicated to the user on the front-end side.
 
 
-Functionalities based on the endpoints defined in web.py:
-- ***POST /upload_image*** -> Accepts image file or image url, saves the image and returns a json response with the image ID and a message. Only accepts image files with extensions JPG, JPEG, PNG, and GIF.<br>
-- ***GET /analyze_image/<image_id>*** -> Accepts image ID, returns a json response with the image height and width.<br>
-- ***GET /list_images*** -> Returns a zip response with all the images saved on the server.<br>
-- ***DELETE /delete_image/<image_id>*** -> Handles image deletion. Expects an image filename (with extension). Returns a JSON response with message on success or failure of deletion
-- ***DELETE /delete_all_images*** ->  Handles deletion of all images in the server. Expects nothing. Returns a JSON response with message on success or failure of deletion
+Functionalities based on the endpoints defined in web.py service:
+- ***POST /upload_image*** -> Accepts image file or image url, saves the image and returns a json response with the image ID and a message. Only accepts image files with extensions JPG, JPEG, PNG, and GIF.
+- ***GET /analyze_image/<image_id>*** -> Accepts image ID, returns a json response with the image height and width.
+- ***GET /list_images*** -> Returns a zip response with all the images saved on the server.
+- ***DELETE /delete_image/<image_id>*** -> Handles image deletion. Expects an image filename (with extension). Returns a JSON response with message on success or failure of deletion.
+- ***DELETE /delete_all_images*** ->  Handles deletion of all images in the server. Expects nothing. Returns a JSON response with message on success or failure of deletion.
 
 ### How to run it:
 There are a couple of ways to run it:
