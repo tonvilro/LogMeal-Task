@@ -1,3 +1,6 @@
+const url = 'http://127.0.0.1:5000'
+import { backendUrl } from './config';
+
 // Show available images on page load
 window.onload = function() {
     displayImages();
@@ -12,7 +15,7 @@ function handleImageUpload() {
 
     let responseData;
 
-    fetch('http://localhost:5001/upload_image', {
+    fetch('${backendUrl}/upload_image', {
         method: 'POST',
         body: formData
     })
@@ -31,7 +34,7 @@ function handleImageUpload() {
 
 function displayImages() {
   // Make API call to retrieve image URLs
-  fetch('http://localhost:5001/list_images')
+  fetch('${backendUrl}/list_images')
     .then(response => response.blob())
     .then(blob => JSZip.loadAsync(blob))
     .then(zip => {
@@ -100,7 +103,7 @@ function view_image_details(filename) {
     const leftW = (screen.width / 2) - (windowSizeX / 2);
     const topW = (screen.height / 2) - (windowSizeY / 2);
     const newWindow = window.open('', "Image Details", `left=${leftW},top=${topW}, height=${windowSizeY}, width=${windowSizeX}`);
-    fetch(`http://localhost:5001/analyze_image/${filename}`)
+    fetch('${backendUrl}/analyze_image/${filename}')
         .then(response => response.json())
         .then(data => {
 
@@ -135,7 +138,7 @@ function view_image_details(filename) {
 }
 
 function delete_image(filename) {
-    fetch(`http://localhost:5001/delete_image/${filename}`, {
+    fetch('${backendUrl}/delete_image/${filename}', {
         method: 'DELETE'
     })
     .then(response => response.json())
