@@ -1,11 +1,13 @@
 import os
 import urllib
 import zipfile
+import click
 from datetime import datetime
 from flask import Flask, jsonify, request, abort, send_file
 from flask_cors import CORS
 from PIL import Image
 from urllib.request import urlretrieve
+from termcolor import colored
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -14,7 +16,9 @@ app = Flask(__name__)
 cors = CORS(app)
 
 # Set the path for saving images
-app.config['UPLOAD_FOLDER'] = 'ImageDB'
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))  # This is your Project Root
+DBpath = os.path.join(ROOT_DIR, 'ImageDB')
+app.config['UPLOAD_FOLDER'] = DBpath
 
 
 @app.route('/')
@@ -61,6 +65,7 @@ def upload_image():
             os.remove('temp.jpg')
         except:
             return jsonify({'msg': 'Error: We can not retrieve the provided url, sorry!'}), 400
+
         image_id = generate_id(image_url.rsplit('/', 1)[1])
         with open(os.path.join(app.config['UPLOAD_FOLDER'], image_id), 'wb') as f:
             f.write(image_binary)
@@ -76,9 +81,13 @@ def analyze_image(image_id):
     """
     try:
         folder_path = app.config['UPLOAD_FOLDER']
-        image_path = f"{folder_path}/{image_id}"
+        image_path = (os.path.join(folder_path, image_id))
+
+        print(image_path)
+        print(1)
 
         with Image.open(image_path) as img:
+            print(2)
             width, height = img.size
             return jsonify({'msg': 'Image found!', 'height': height, 'width': width}), 200
 
@@ -97,13 +106,14 @@ def list_images():
     Returns a zip response that contains all the available images.
     """
     folder_path = app.config['UPLOAD_FOLDER']
+    zip_path = os.path.join(ROOT_DIR, '../images.zip')
 
     # Delete previous zip file (not really necessary)
-    if os.path.exists('../images.zip'):
-        os.remove("../images.zip")
+    if os.path.exists(zip_path):
+        os.remove(zip_path)
 
     # Zip file Initialization
-    image_zip = zipfile.ZipFile('../images.zip', 'w', compression=zipfile.ZIP_STORED)
+    image_zip = zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_STORED)
 
     # zip all the files which are inside in the folder
     for root, dirs, files in os.walk(folder_path):
@@ -113,7 +123,7 @@ def list_images():
 
     # send files
     try:
-        return send_file('../images.zip', mimetype='zip', as_attachment=True)
+        return send_file(zip_path, mimetype='zip', as_attachment=True)
     except FileNotFoundError:
         abort(404)
 
@@ -190,4 +200,10 @@ def remove_file_extension(filename):
 
 
 if __name__ == '__main__':
+    index_path = os.path.join(ROOT_DIR, '../frontend/index.html')  # requires `import os`
+    print(colored("----ACCESS IMAGE MANAGER WEB----", 'black', 'on_white', ['bold']))
+    print("Using Docker: http://localhost/")
+    print(colored("--------------------------------", 'black', 'on_white', ['bold']))
+    click.launch(index_path)
     app.run(host='0.0.0.0', port=5000)
+
