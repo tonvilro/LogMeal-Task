@@ -12,6 +12,8 @@ Simple web application that allows users to upload images and perform basic imag
 
 ### Functionalities:
 
+List of functionalities:
+
 - The user can upload an image either from their computer or by providing a source URL.
 - The user can view all the images uploaded so far and their image IDs.
 - The user can view the details of the images uploaded.
@@ -32,31 +34,27 @@ Functionalities based on the endpoints defined in web.py service:
 ### How to run it:
 There are a couple of ways to run it:
 
-1. Directly running the backend service from the terminal. Navigate to the root of the project directory and run the following commands:
+1. Manual command-line execution. Navigate to the root of the project directory and run the following commands:
 ```
-WINDOWS:
-   pip install -r .\backend\requirements.txt
-   python .\backend\web.py
-
-LINUX/macOS:
-   pip install -r ./backend/requirements.txt
-   python ./backend/web.py
+pip install -r ./backend/requirements.txt
+python ./backend/web.py
 ```
-2. Running the logmeal-task container. Requires: Docker and Docker Compose installed. Copy locally the project and run in the root directory the following command. This will start two separate docker microservices, one for the frontend web page and another for the backend API. Once the container is running the backend will be running and the frontend will be available at http://localhost/.
+2. Docker based execution. Requires: Docker and Docker Compose installed. Navigate to the root of the project directory and run the following command. This will start two separate docker microservices, one for the frontend web page and another for the backend API. Once the container is running the backend will be running and the frontend will be available at http://localhost/.
 ```
 docker-compose up
 ```
 
 ### Developing steps followed:
-To develop the given task, I followed these steps:
+To develop the given task, in general lines, I followed these steps:
 
 1. Started by building the REST API. I did not have experience on Flask, but I did have experience on REST APIs. Started by defining the endpoints. Once defined I started coding each one of them. Using Postman to try on the go each on of them. The Postman collection to make test requests is available in the repository.
 
-2. The second part of the project was to focus on the frontend. First, creating a html base layout connected with a javascript file to handle requests and define some necessary functions and parameters. Once everything was correctly connected and tested. I started giving some format to everything. Added Bootstrap to be able to add better looking components and give the page a more solid look. To be able to issue local requests CORS had to be correctly configured.
+2. The second part of the project was to focus on the frontend. First, creating a html base layout connected with a javascript file to handle requests. Defined and tested some necessary functions and parameters with js. Once everything was correctly connected and tested. I started giving some format to everything. Added Bootstrap to be able to add better looking components and give the page a more solid look. To be able to issue local requests CORS had to be correctly configured.
 
-3. The last step was documenting some functions that were still not commented. Creating the containers for the two separate services and join them using a docker compose file was a bit more tedious since I had no previous experience at all. After doing my research and some problems getting Docker Desktop I was able to make it work.
+3. The last step was documenting some functions that were still not commented. Creating the containers for the two separate services, and joining them using a docker compose file, was a bit more tedious since I had no previous experience at all with Docker. After doing my research and some problems installing Docker I was able to make it work.
    - On the way I added a couple extra functionalities like being able to download or delete an image.
 
+4. Test and fix device compatibility. Make sure the project runs everywhere.
 
-Greetings!<br>
+That's it. Greetings!<br>
 Ton
