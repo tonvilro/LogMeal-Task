@@ -32,9 +32,15 @@ Functionalities based on the endpoints defined in web.py service:
 ### How to run it:
 There are a couple of ways to run it:
 
-1. Directly running the backend service from the terminal. Go to the backend directory found in the root of the project and run the service with the following command. Once the backend service is running open the index.html file with a browser. You are all set.
+1. Directly running the backend service from the terminal. Navigate to the root of the project directory and run the following commands:
 ```
-python web.py
+WINDOWS:
+   pip install -r .\backend\requirements.txt
+   python .\backend\web.py
+
+LINUX/macOS:
+   pip install -r ./backend/requirements.txt
+   python ./backend/web.py
 ```
 2. Running the logmeal-task container. Requires: Docker and Docker Compose installed. Copy locally the project and run in the root directory the following command. This will start two separate docker microservices, one for the frontend web page and another for the backend API. Once the container is running the backend will be running and the frontend will be available at http://localhost/.
 ```
