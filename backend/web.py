@@ -15,8 +15,10 @@ app = Flask(__name__)
 # Enable Cross-Origin Resource Sharing (CORS)
 cors = CORS(app)
 
-# Set the path for saving images
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))  # This is your Project Root
+# Root directory of the project. We will use it to avoid possible path errors between devices.
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Configure app variable upload folder with ImageDB path
 DBpath = os.path.join(ROOT_DIR, 'ImageDB')
 app.config['UPLOAD_FOLDER'] = DBpath
 
@@ -26,7 +28,7 @@ def main():
     """
     Main route for the application, returns a welcome message.
     """
-    return jsonify('Welcome to the Log Meal Task!')
+    return jsonify('Welcome to the Log Meal Task!. Speaking from the web.py service.')
 
 
 @app.route('/upload_image', methods=['POST'])
@@ -40,7 +42,9 @@ def upload_image():
     if 'image' not in request.files and 'image_url' not in request.form:
         return jsonify({'msg': 'Error: No image provided'}), 400
 
+    # Image received is in file format
     if 'image' in request.files:
+        # Get image
         image = request.files['image']
 
         if image.filename == '':
@@ -54,9 +58,11 @@ def upload_image():
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_id))
         return jsonify({'msg': f'We got your image!\nID: {image_id}', 'ID': image_id}), 200
 
+    # Image received is in url format
     if 'image_url' in request.form:
         image_url = request.form['image_url']
         try:
+            # Retrieve image from url and handle errors
             urllib.request.urlretrieve(image_url, 'temp.jpg')
             with open('temp.jpg', 'rb') as f:
                 image_binary = f.read()
@@ -84,6 +90,7 @@ def analyze_image(image_id):
     Returns a json response with the image height and width.
     """
     try:
+        # Get image size. Handle error if the image does not exist.
         folder_path = app.config['UPLOAD_FOLDER']
         image_path = (os.path.join(folder_path, image_id))
         with Image.open(image_path) as img:
@@ -135,6 +142,7 @@ def delete_image(image_id):
     Returns a json response indicating if there was success or not.
     """
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], image_id)
+    # Check if file exists. Handle error otherwise.
     if os.path.exists(file_path):
         os.remove(file_path)
         return jsonify({'msg': f'{image_id} was deleted successfully'}), 200
@@ -150,6 +158,7 @@ def delete_all_images():
     Returns a json response indicating if there was success or not.
     """
     image_folder = app.config['UPLOAD_FOLDER']
+    # Delete all images. Notify if the image directory (ImageDB) is empty.
     image_files = [f for f in os.listdir(image_folder) if os.path.isfile(os.path.join(image_folder, f))]
     if not image_files:
         return jsonify({'msg': 'Error: No images found'}), 404
@@ -199,10 +208,17 @@ def remove_file_extension(filename):
 
 
 if __name__ == '__main__':
-    index_path = os.path.join(ROOT_DIR, '../frontend/index.html')  # requires `import os`
     print(colored("----ACCESS IMAGE MANAGER WEB----", 'black', 'on_white', ['bold']))
     print("Using Docker: http://localhost/")
     print(colored("--------------------------------", 'black', 'on_white', ['bold']))
+
+    # Launches the index.html file when executing from terminal
+    index_path = os.path.join(ROOT_DIR, '../frontend/index.html')  # requires `import os`
     click.launch(index_path)
+
+    # Set app host and run. Host=0.0.0.0 allows the app to be accessed from any IP address,
+    # including from other devices on the same network. This is useful for development and testing,
+    # as it allows other devices to access the app without having to set up port forwarding
+    # or other networking configurations.
     app.run(host='0.0.0.0', port=5000)
 
