@@ -1,3 +1,4 @@
+
 // Configuration imported through HTML
 
 
@@ -295,5 +296,6 @@ function get_file_extension(filename) {
  * @returns {undefined}
  */
 function refresh_page() {
+    // Reloads current location
     location.reload();
 }
