@@ -25,11 +25,16 @@ The API will return an error message following the HTTP conventions. The error w
 
 
 Functionalities based on the endpoints defined in web.py service:
-- ***POST /upload_image*** -> Accepts image file or image url, saves the image and returns a json response with the image ID and a message. Only accepts image files with extensions JPG, JPEG, PNG, and GIF.
-- ***GET /analyze_image/<image_id>*** -> Accepts image ID, returns a json response with the image height and width.
-- ***GET /list_images*** -> Returns a zip response with all the images saved on the server.
-- ***DELETE /delete_image/<image_id>*** -> Handles image deletion. Expects an image filename (with extension). Returns a JSON response with message on success or failure of deletion.
-- ***DELETE /delete_all_images*** ->  Handles deletion of all images in the server. Expects nothing. Returns a JSON response with message on success or failure of deletion.
+- ***POST /upload_image:***
+   - Accepts image file or image url, saves the image and returns a json response with the image ID and a message. Only accepts image files with extensions JPG, JPEG, PNG, and GIF.
+- ***GET /analyze_image/<image_id>:***
+   - Accepts image ID, returns a json response with the image height and width.
+- ***GET /list_images:***
+   - Returns a zip response with all the images saved on the server.
+- ***DELETE /delete_image/<image_id:>***
+   - Handles image deletion. Expects an image filename (with extension). Returns a JSON response with message on success or failure of deletion.
+- ***DELETE /delete_all_images:***
+   - Handles deletion of all images in the server. Expects nothing. Returns a JSON response with message on success or failure of deletion.
 
 ### How to run it:
 There are a couple of ways to run it:
