@@ -63,13 +63,13 @@ def upload_image():
                 if image_binary is None:
                     return jsonify({'msg': 'Error: We can not retrieve the provided url, sorry!'}), 400
             os.remove('temp.jpg')
+
+            image_id = generate_id(image_url.rsplit('/', 1)[1])
+            with open(os.path.join(app.config['UPLOAD_FOLDER'], image_id), 'wb') as f:
+                f.write(image_binary)
+            return jsonify({'msg': f'We got your image!\nID: {image_id}', 'ID': image_id}), 200
         except:
             return jsonify({'msg': 'Error: We can not retrieve the provided url, sorry!'}), 400
-
-        image_id = generate_id(image_url.rsplit('/', 1)[1])
-        with open(os.path.join(app.config['UPLOAD_FOLDER'], image_id), 'wb') as f:
-            f.write(image_binary)
-        return jsonify({'msg': f'We got your image!\nID: {image_id}', 'ID': image_id}), 200
 
 
 @app.route('/analyze_image/<image_id>', methods=['GET'])
