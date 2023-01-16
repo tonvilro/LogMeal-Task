@@ -65,6 +65,10 @@ def upload_image():
             os.remove('temp.jpg')
 
             image_id = generate_id(image_url.rsplit('/', 1)[1])
+
+            if not allowed_file(image_id):
+                return jsonify({'msg': 'Error: Invalid extension. Accepted image extensions: JPG, JPEG, PNG, GIF'}), 400
+
             with open(os.path.join(app.config['UPLOAD_FOLDER'], image_id), 'wb') as f:
                 f.write(image_binary)
             return jsonify({'msg': f'We got your image!\nID: {image_id}', 'ID': image_id}), 200
@@ -82,12 +86,7 @@ def analyze_image(image_id):
     try:
         folder_path = app.config['UPLOAD_FOLDER']
         image_path = (os.path.join(folder_path, image_id))
-
-        print(image_path)
-        print(1)
-
         with Image.open(image_path) as img:
-            print(2)
             width, height = img.size
             return jsonify({'msg': 'Image found!', 'height': height, 'width': width}), 200
 
